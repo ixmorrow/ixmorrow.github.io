@@ -1,0 +1,18 @@
+title: "Ivan Morrow"
+email: "ivanmorrow14@gmail.com"
+description: >-
+  A personal website for showcasing my CV, technical blogs, projects, and more.
+baseurl: ""          # Empty for GitHub Pages root
+url: "https://ixmorrow.github.io"
+
+github_username: "ixmorrow"
+social_links:
+  linkedin: "https://www.linkedin.com/in/ivan-morrow-profile/"
+  github: "https://github.com/ixmorrow"
+  twitter: "https://twitter.com/ivan_morrow"
+
+# Build settings
+theme: minima        # Default theme, we will customize this later
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag
