@@ -1,24 +1,29 @@
-/* General Page Styling */
+/* General Styling */
 body {
     font-family: Arial, sans-serif;
-    line-height: 1.6;
+    line-height: 1.8;
     margin: 0;
     padding: 0;
-    background: #f9f9f9;
+    background: #fff;
     color: #333;
-    text-align: center;
-    /* Center align the content */
 }
 
+/* Header Styling */
 header {
-    background: #333;
-    color: #fff;
+    background: #fff;
+    /* White background */
+    color: #000;
+    /* Black text */
+    text-align: center;
     padding: 20px 0;
+    border-bottom: 1px solid #ddd;
 }
 
 header h1 {
+    font-family: Georgia, serif;
+    /* Serif font for title */
+    font-size: 2.5rem;
     margin: 0;
-    font-size: 2.5em;
 }
 
 header nav {
@@ -26,40 +31,39 @@ header nav {
 }
 
 header nav a {
-    color: #fff;
+    color: #000;
     text-decoration: none;
-    margin: 0 15px;
     font-weight: bold;
+    margin: 0 15px;
+    font-size: 1rem;
 }
 
 header nav a:hover {
     text-decoration: underline;
 }
 
+/* Main Content */
 main {
-    padding: 30px;
+    text-align: center;
+    margin: 40px 20px;
 }
 
 .content-container {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    display: inline-block;
-    /* Keeps content centered */
-    max-width: 800px;
-    margin: 20px auto;
+    max-width: 700px;
+    margin: 0 auto;
     text-align: left;
 }
 
 h2 {
-    font-size: 1.8em;
+    font-family: Georgia, serif;
+    font-size: 2rem;
+    font-weight: bold;
     margin-bottom: 10px;
 }
 
 ul {
-    list-style-type: none;
-    padding: 0;
+    list-style: none;
+    padding-left: 0;
 }
 
 ul li a {
@@ -71,20 +75,44 @@ ul li a:hover {
     text-decoration: underline;
 }
 
+/* Profile Image */
+.profile-img {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin: 20px auto;
+    display: block;
+}
+
+/* Footer Styling */
 footer {
-    background: #333;
-    color: #fff;
+    background: #fff;
+    /* White background */
+    color: #000;
+    /* Black text */
+    border-top: 1px solid #ddd;
+    text-align: center;
     padding: 20px 0;
-    margin-top: 30px;
 }
 
-.footer-content p {
-    margin: 0;
+footer p,
+footer a {
+    margin: 5px 0;
+    font-size: 1rem;
+    color: #000;
+    text-decoration: none;
 }
 
+footer a:hover {
+    text-decoration: underline;
+}
+
+/* Social Links */
 .social-links {
-    list-style-type: none;
+    list-style: none;
     padding: 0;
+    margin: 10px 0;
 }
 
 .social-links li {
@@ -93,20 +121,6 @@ footer {
 }
 
 .social-links a {
-    color: #ff9800;
-    text-decoration: none;
+    color: #0066cc;
     font-weight: bold;
-}
-
-.social-links a:hover {
-    text-decoration: underline;
-}
-
-/* Circular Profile Image */
-.profile-img {
-    width: 150px;
-    height: 150px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin: 20px 0;
 }

@@ -19,20 +19,19 @@
             <a href="{{ '/reading/' | relative_url }}">Reading List</a>
         </nav>
     </header>
+
     <main>
         <div class="content-container">
             {{ content }}
         </div>
     </main>
+
     <footer>
-        <div class="footer-content">
-            <p>Connect with me:</p>
-            <ul class="social-links">
-                <li><a href="{{ site.social_links.github }}">GitHub</a></li>
-                <li><a href="{{ site.social_links.linkedin }}">LinkedIn</a></li>
-                <li><a href="{{ site.social_links.twitter }}">Twitter</a></li>
-            </ul>
-        </div>
+        <ul class="social-links">
+            <li><a href="{{ site.social_links.github }}">GitHub</a></li>
+            <li><a href="{{ site.social_links.linkedin }}">LinkedIn</a></li>
+            <li><a href="{{ site.social_links.twitter }}">Twitter</a></li>
+        </ul>
         <p>&copy; {{ site.time | date: "%Y" }} {{ site.title }}. All rights reserved.</p>
     </footer>
 </body>
