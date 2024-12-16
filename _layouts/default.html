@@ -31,9 +31,15 @@
 
     <footer>
         <ul class="social-links">
-            <li><a href="{{ site.social_links.github }}">GitHub</a></li>
-            <li><a href="{{ site.social_links.linkedin }}">LinkedIn</a></li>
-            <li><a href="{{ site.social_links.twitter }}">Twitter</a></li>
+            {% if site.social_links.github %}
+            <li><a href="{{ site.social_links.github }}" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+            {% endif %}
+            {% if site.social_links.linkedin %}
+            <li><a href="{{ site.social_links.linkedin }}" target="_blank" rel="noopener noreferrer">LinkedIn</a></li>
+            {% endif %}
+            {% if site.social_links.twitter %}
+            <li><a href="{{ site.social_links.twitter }}" target="_blank" rel="noopener noreferrer">Twitter</a></li>
+            {% endif %}
         </ul>
         <p>&copy; {{ site.time | date: "%Y" }} {{ site.title }}. All rights reserved.</p>
     </footer>
