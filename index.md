@@ -3,7 +3,7 @@ layout: default
 title: Home
 ---
 
-<img src="/assets/img/profile.jpg" alt="Profile Picture" class="profile-img">
+<img src="/assets/img/profile.JPG" alt="Profile Picture" class="profile-img">
 
 # Welcome to My Personal Website
 
