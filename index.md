@@ -1,15 +1,16 @@
 ---
 layout: default
 title: Home
+profile_image: /assets/img/profile.JPG
 ---
 
-<img src="/assets/img/profile.JPG" alt="Profile Picture" class="profile-img">
+## Welcome to My Personal Website
 
-# Welcome to My Personal Website
-
-Hi, I'm **{{ site.title }}**, and this is my personal site. Here you can find:
+Hi, I'm **{{ site.title }}**, a software engineer passionate about building clean, scalable solutions. Here you can explore:
 
 - [My CV](/cv/)
 - [Technical Blogs](/blog/)
 - [Projects I'm working on](/projects/)
 - [My Reading List](/reading/)
+
+Feel free to connect with me!

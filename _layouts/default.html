@@ -24,6 +24,9 @@
         <div class="content-container">
             {{ content }}
         </div>
+        {% if page.profile_image %}
+        <img src="{{ page.profile_image }}" alt="Profile Picture" class="profile-img">
+        {% endif %}
     </main>
 
     <footer>
