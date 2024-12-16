@@ -6,4 +6,5 @@ permalink: /reading/
 
 # Reading List
 
-Here are some books and articles I recommend.
+[GoodReads](https://www.goodreads.com/user/show/184595895-ivan)
+

@@ -10,6 +10,7 @@ social_links:
   linkedin: "https://www.linkedin.com/in/ivan-morrow-profile/"
   github: "https://github.com/ixmorrow"
   twitter: "https://twitter.com/ivan_morrow"
+  goodreads: "https://www.goodreads.com/user/show/184595895-ivan"
 
 # Build settings
 theme: minima        # Default theme, we will customize this later
