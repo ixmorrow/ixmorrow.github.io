@@ -1,10 +1,10 @@
 /* General Styling */
-/* Set global font to Georgia with fallback fonts */
 body {
-    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-family: "Helvetica Neue", Arial, sans-serif;
     line-height: 1.8;
     margin: 0;
     padding: 0;
+    background: #fff;
     color: #333;
 }
 
