@@ -9,9 +9,10 @@ permalink: /blog/
     <p>Welcome to my technical blog where I share insights, learnings, and explorations in software engineering, machine learning, and emerging technologies.</p>
 </div>
 
-{% if site.posts.size > 0 %}
+{% assign posts = site.posts %}
+{% if posts and posts.size > 0 %}
 <div class="blog-grid">
-    {% for post in site.posts %}
+    {% for post in posts %}
     <article class="blog-card">
         <a href="{{ post.url | relative_url }}">
             <h3>{{ post.title }}</h3>
@@ -22,9 +23,9 @@ permalink: /blog/
                 <p>{{ post.content | strip_html | truncatewords: 30 }}</p>
             {% endif %}
             
-            {% if post.tags.size > 0 %}
+            {% if post.tags and post.tags.size > 0 %}
             <div class="blog-tags">
-                {% for tag in post.tags limit:3 %}
+                {% for tag in post.tags limit: 3 %}
                     <span class="tag">{{ tag }}</span>
                 {% endfor %}
             </div>

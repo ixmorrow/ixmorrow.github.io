@@ -13,7 +13,29 @@ social_links:
   goodreads: "https://www.goodreads.com/user/show/184595895-ivan"
 
 # Build settings
-theme: minima        # Default theme, we will customize this later
+# We're using custom layouts, so we don't need the minima theme
+# theme: minima
 plugins:
   - jekyll-feed
   - jekyll-seo-tag
+
+# Jekyll configuration for GitHub Pages
+markdown: kramdown
+highlighter: rouge
+sass:
+  style: compressed
+
+# Pagination
+paginate: 5
+paginate_path: "/blog/page:num/"
+
+# Permalink structure
+permalink: /:categories/:year/:month/:day/:title/
+
+# Exclude files from processing
+exclude:
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+  - node_modules
+  - vendor

@@ -15,10 +15,12 @@
     <!-- Stylesheet -->
     <link rel="stylesheet" href="{{ '/assets/css/style.css' | relative_url }}">
     
-    <!-- SEO and social media meta tags -->
-    {% if jekyll.environment == "production" %}
-        {% include head-seo.html %}
+    <!-- SEO meta tags -->
+    <meta name="author" content="{{ site.title }}">
+    {% if page.description %}
+        <meta name="description" content="{{ page.description }}">
     {% endif %}
+    {% seo %}
 </head>
 
 <body>
