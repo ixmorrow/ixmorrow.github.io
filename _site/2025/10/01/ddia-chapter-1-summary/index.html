@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ddia Chapter 1 Summary | Ivan Morrow</title>
+    <meta name="description" content="A personal website for showcasing my CV, technical blogs, projects, and more.">
+    
+    <!-- Modern font loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    
+    <!-- SEO meta tags -->
+    <meta name="author" content="Ivan Morrow">
+    
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Ddia Chapter 1 Summary | Ivan Morrow</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="Ddia Chapter 1 Summary" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="Chapter 1: Reliable, Scalable, and Maintainable Applications" />
+<meta property="og:description" content="Chapter 1: Reliable, Scalable, and Maintainable Applications" />
+<link rel="canonical" href="https://ixmorrow.github.io/2025/10/01/ddia-chapter-1-summary/" />
+<meta property="og:url" content="https://ixmorrow.github.io/2025/10/01/ddia-chapter-1-summary/" />
+<meta property="og:site_name" content="Ivan Morrow" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-10-01T00:00:00-05:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Ddia Chapter 1 Summary" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-10-01T00:00:00-05:00","datePublished":"2025-10-01T00:00:00-05:00","description":"Chapter 1: Reliable, Scalable, and Maintainable Applications","headline":"Ddia Chapter 1 Summary","mainEntityOfPage":{"@type":"WebPage","@id":"https://ixmorrow.github.io/2025/10/01/ddia-chapter-1-summary/"},"url":"https://ixmorrow.github.io/2025/10/01/ddia-chapter-1-summary/"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+    <header>
+        <h1>
+            <a href="/">Ivan Morrow</a>
+        </h1>
+        <nav>
+            <a href="/cv/">CV</a>
+            <a href="/blog/">Blog</a>
+            <a href="/projects/">Projects</a>
+            <a href="/reading/">Reading</a>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="content-section">
+    <article class="blog-post">
+        <header class="post-header">
+            <h1>Ddia Chapter 1 Summary</h1>
+            <div class="post-meta">
+                <time datetime="2025-10-01T00:00:00-05:00">October 01, 2025</time>
+                
+            </div>
+        </header>
+
+        <div class="post-content">
+            <h1 id="chapter-1-reliable-scalable-and-maintainable-applications">Chapter 1: Reliable, Scalable, and Maintainable Applications</h1>
+
+<p>Chapter 1 focused on three key topics in distributed systems: reliability, scalability, and maintainability. The chapter defines each of these important topics, provides some best practices for achieving each, and gives real-world examples of how they can be applied to distributed systems. While reading this chapter, I found myself relating a lot of what I read back to my experience over the last five years building and maintaining the cloud and distributed trading system at Belvedere.</p>
+
+<p>Reliability is defined as the ability for a system to work correctly even in the face of adversity. Correctly means performing the correct function at the desired level of performance. Reliability is a core tenet of distributed systems and something I am intimately familiar with. There are entire careers dedicated to ensuring the reliability of different software systems and it requires some very interesting engineering. One of the main culprits of diminishing the reliability of a system are “faults”. Faults are just things that can go wrong. When desiging a reliable system, it is imperative to anticipate the faults and architect your system to gracefully handle them. This is called fault-tolerance. Notable, the book mentions that a fault is not a failure. A failure is when the system as a whole stops providing the required service to the user. Whereas a fault, can result in the service still being available but maybe degraded or even providing incomplete (or incorrect) data.</p>
+
+<p>During my time at Belvedere, I spent two years as a pseudo Site Reliability Engineer on our hedging and autofitting products. Our hedging services monitored internal order flow and risk reports and sent orders to an exchange automatically in order to hedge the positions we built up throughout the day. This system was designed well before I joined, but there was a key feature in the design of our hedging system that caused a lot of issues (and also prevented some). In order for our traders to run the options execution services that would place making/taking options orders, the hedging services had to be up and running. The options trading services were designed to require a TCP connection to the hedging services in order to run and if that connection was broken, the options services would shut off. This was an intentional choice because if we can’t hedge, then we shouldn’t be trading options. However, this brought a lot of challenges from my perspective on the hedging side. The exchanges we sent our hedge orders to have exchange side safety settings. When the hedging services were designed, they were not designed to be fault-tolerant of these settings. Meaning when the exchange indicated we hit one of their safety settings, our hedging services would shut off. This ultimately led to hedging services shutting off in the middle of the trading day and caused our downstream options execution services to also shutoff. This led to downtime for our traders, time out of market, opportunity cost, and required manual intervention on both the hedging and options side. This led to some interesting conversations between engineering and trading. We built fault-tolerance around some of the exchange side safety settings that were causing issues, but we also determined that shutting everything off on others was the right move. I bring this up because it was a real-world example of a production issue related to reliability and fault-tolerance. However, it also shows that each scenario is unique and fault-tolerance may not be the best choice for every possible issue.</p>
+
+<p>Scalability is how a system is able to handle an increase in load, whether that load is in data volume, traffic volume, or complexity. Scalability is often associated with either increasing instances of a service to handle more requests (horizontal scaling), or increasing the amount of compute resources available to a service (vertical scaling). I most often associate scalability with Kubernetes. Kubernetes has become the de facto technology used for scalable workloads and it automates so much of what is required for scaling infrastructure for you. Designing scalable systems requires you to handle a few prerequisites before you can begin:</p>
+
+<ul>
+  <li>You must be able to describe the current load on the system via metrics. Without that data you cannot realistically plan for scalability.</li>
+  <li>If the system grows in a particular way, what are our options for coping with the growth?</li>
+  <li>How can we add computing resources to handle the additional load?</li>
+</ul>
+
+<p>Once you have the data to measure the performance of your system and you have answered the next two questions, you can actually design how your system will scale. I thought the book mentioned something really interesting in regards to thinking about scalability. It mentions how decitions around scaling are based on assumptions of which operations will be common and which will be rare. If these assumptions are wrong, then the engineering work used to implement the scaling becomes wasted effort. This stood out to me because of how it realates to early stage startups. Since I am joining an early stage startup next week, I think this is a point I would like to take with me and keep in the back of my mind. The book mentions how it is usually more important to be able to iterate quickly on product features than it is to scale to some hypothetical future load right away. This makes sense to me. The primary goal of a startup is to make money first and quickly. If I can design a system that will work for our initial projected load in a week versus design a scalable solution that scales to 100x our initial load in 3 months, then it is probably a better use of my time to choose the former. Coming from Belvedere, I think I already have a bit of that mentality. There was a big focus on getting systems deployed that worked quickly so that we could capitalize on opportunities in the market now. However, I also had to deal with a lot of legacy systems that followed this approach and were never re-architected to meet a larger demand/load and this caused a lot of headaches. I can see the need and argument for both.</p>
+
+<p>Lastly, maintainability is about making life better for the engineering and ops teams who need to work with the system. I have deep experience on the operations side of software systems and so designing something that is easily maintainable is something I really care about. Thinking about the supportability of a system while in the design phase is important and I’ve taken many lessons first-hand of what unsupportable software is like. The book mentions Netflix’s “chaos monkey” and this is something I learned from my last manager at Belvedere. I was tasked with chaos testing all the systems I worked on while working with them and I am a big fan of it. I learned so much and caught many issues (or faults) while still in the testing phase from this. Because of chaos testing I was able to roll out more reliable and maintainable systems to production the first time around. I was not aware chaos testing was associated with Netflix, but that’s cool to see that in this book.</p>
+
+<p>I will end this blog with a section I really enjoyed from the chapter on operations teams. Operations teams are vital to keeping a software system running smoothing. A good operations team typically is responsible for the following, and more:</p>
+
+<ul>
+  <li>Monitoring the health of the system and quickly restoring service if it goes into a bad state</li>
+  <li>Tracking down the cause of problems, such as system failures or degraded performance</li>
+  <li>Keeping software and platforms up to date , including security patches</li>
+  <li>Keeping tabes on how different systems affect each other, so that a problematic change can be avoided before it causes damage</li>
+  <li>Anticipating future problems and solving them before they occur (e.g. capacity planning)</li>
+  <li>Establishing good practices and tools for deployment, configuration management, and more</li>
+  <li>Performing complex maintenance tasks, such as moving an application from one platform to another</li>
+  <li>Maintaining the security of the system as configuration changes are made</li>
+  <li>Defining processes that make operations predictable and help keep the production environment stable</li>
+  <li>Preserving the organization’s knowledge about the system</li>
+</ul>
+
+<p>Operations teams do a lot to keep software systems afloat and they learn a lot about how they perform in production! Please always design with your ops teams in mind and work with them. They often have a very unique perspective and might be able to provide insight during the design phase of your system.</p>
+
+        </div>
+
+        <footer class="post-footer">
+            <nav class="post-navigation">
+                
+                    <a href="/2025/09/21/The-Grid-Book-Report/" class="hero-link secondary">← The Grid Book Report</a>
+                
+                
+                    <a href="/2025/10/02/the-grid-summary/" class="hero-link secondary">The Grid Summary →</a>
+                
+            </nav>
+            
+            <div style="margin-top: 2rem;">
+                <a href="/blog/" class="hero-link">← Back to Blog</a>
+            </div>
+        </footer>
+    </article>
+</div>
+
+<style>
+.blog-post {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.post-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.post-meta {
+    margin-top: 0.5rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.post-tags {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.post-content {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.post-content h2,
+.post-content h3,
+.post-content h4 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.post-content blockquote {
+    border-left: 4px solid var(--primary-color);
+    margin: 1.5rem 0;
+    padding: 1rem 1.5rem;
+    background: var(--background-secondary);
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+.post-content code {
+    background: var(--background-secondary);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    border: 1px solid var(--border-color);
+}
+
+.post-content pre {
+    background: var(--background-secondary);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+}
+
+.post-content pre code {
+    background: none;
+    padding: 0;
+    border: none;
+}
+
+.post-footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.post-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .post-navigation {
+        flex-direction: column;
+    }
+    
+    .post-meta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+</style>
+    </main>
+
+    <footer>
+        <ul class="social-links">
+            <li><a href="https://github.com/ixmorrow" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+            </a></li>
+            <li><a href="https://www.linkedin.com/in/ivan-morrow-profile/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+            </a></li>
+            <li><a href="https://twitter.com/ivan_morrow" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                </svg>
+            </a></li>
+            
+            <li><a href="https://www.goodreads.com/user/show/184595895-ivan" target="_blank" rel="noopener noreferrer" aria-label="Goodreads">
+                📚
+            </a></li>
+            
+        </ul>
+        <p>&copy; 2025 Ivan Morrow. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Dark mode toggle functionality
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.querySelector('.theme-icon');
+            const currentTheme = body.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                body.removeAttribute('data-theme');
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Load saved theme on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.querySelector('.theme-icon');
+            
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+            } else {
+                themeIcon.textContent = '🌙';
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

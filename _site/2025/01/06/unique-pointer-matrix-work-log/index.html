@@ -1,0 +1,722 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unique Pointer Matrix Work Log | Ivan Morrow</title>
+    <meta name="description" content="A personal website for showcasing my CV, technical blogs, projects, and more.">
+    
+    <!-- Modern font loading -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/assets/css/style.css">
+    
+    <!-- SEO meta tags -->
+    <meta name="author" content="Ivan Morrow">
+    
+    <!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Unique Pointer Matrix Work Log | Ivan Morrow</title>
+<meta name="generator" content="Jekyll v3.9.5" />
+<meta property="og:title" content="Unique Pointer Matrix Work Log" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="RAII practice with custom Matrix class in C++" />
+<meta property="og:description" content="RAII practice with custom Matrix class in C++" />
+<link rel="canonical" href="https://ixmorrow.github.io/2025/01/06/unique-pointer-matrix-work-log/" />
+<meta property="og:url" content="https://ixmorrow.github.io/2025/01/06/unique-pointer-matrix-work-log/" />
+<meta property="og:site_name" content="Ivan Morrow" />
+<meta property="og:type" content="article" />
+<meta property="article:published_time" content="2025-01-06T00:00:00-06:00" />
+<meta name="twitter:card" content="summary" />
+<meta property="twitter:title" content="Unique Pointer Matrix Work Log" />
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","dateModified":"2025-01-06T00:00:00-06:00","datePublished":"2025-01-06T00:00:00-06:00","description":"RAII practice with custom Matrix class in C++","headline":"Unique Pointer Matrix Work Log","mainEntityOfPage":{"@type":"WebPage","@id":"https://ixmorrow.github.io/2025/01/06/unique-pointer-matrix-work-log/"},"url":"https://ixmorrow.github.io/2025/01/06/unique-pointer-matrix-work-log/"}</script>
+<!-- End Jekyll SEO tag -->
+
+</head>
+
+<body>
+    <header>
+        <h1>
+            <a href="/">Ivan Morrow</a>
+        </h1>
+        <nav>
+            <a href="/cv/">CV</a>
+            <a href="/blog/">Blog</a>
+            <a href="/projects/">Projects</a>
+            <a href="/reading/">Reading</a>
+            <button class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+                <span class="theme-icon">🌙</span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+        <div class="content-section">
+    <article class="blog-post">
+        <header class="post-header">
+            <h1>Unique Pointer Matrix Work Log</h1>
+            <div class="post-meta">
+                <time datetime="2025-01-06T00:00:00-06:00">January 06, 2025</time>
+                
+            </div>
+        </header>
+
+        <div class="post-content">
+            <h2 id="raii-practice-with-custom-matrix-class-in-c">RAII practice with custom Matrix class in C++</h2>
+
+<p>Spent some time over the holidays working on practicing RAII in C++ by implementing my own custom unique pointer class and incorporating that into a custom matrix class in C++. The goal of this project was to practice RAII, which stands for Resource Acquisition Is Initialization, work on my C++ skills, and work on a ML systems related project. This code does not use any CUDA currently, but that could change down the line with future iterations.</p>
+
+<p>With this project, I created a custom unique pointer class called <code class="language-plaintext highlighter-rouge">UniqueResource</code>. This data struct will point to a matrice’s data in the matrix class. The reason I chose to store the matrice’s data in a pointer is because the matrices involved in machine learning can get very large. With these extremely large matrices, it would be inefficient to store it in a traditional member variable as opposed to a pointer that will simply point to a location in memory where the data is stored. With this, we can also enforce safety measures in the <code class="language-plaintext highlighter-rouge">UniqueResource</code> class.</p>
+
+<p>In order to test the <code class="language-plaintext highlighter-rouge">UniqueResource</code> class, I decided to implement a custom <code class="language-plaintext highlighter-rouge">Matrix</code> class that utilizes the <code class="language-plaintext highlighter-rouge">UniqueResource</code>. The matrix class also provided an opportunity to work on OOP concepts in C++ and the following:</p>
+
+<ul>
+  <li>
+    <p>Move semantics</p>
+  </li>
+  <li>
+    <p>working with row major indexing</p>
+  </li>
+  <li>
+    <p>function overloading</p>
+  </li>
+  <li>
+    <p>Templating</p>
+  </li>
+</ul>
+
+<h3 id="uniqueresource">UniqueResource</h3>
+
+<p>Let’s get started with the <code class="language-plaintext highlighter-rouge">UniqueResource</code> implementation. This is going to be a templated class with the following member variables: <code class="language-plaintext highlighter-rouge">T *ptr</code> and <code class="language-plaintext highlighter-rouge">bool is_array</code>. <code class="language-plaintext highlighter-rouge">ptr</code> is a pointer to any type T. <code class="language-plaintext highlighter-rouge">is_array</code> is a boolean flag that indicates whether or not <code class="language-plaintext highlighter-rouge">ptr</code> is an array.</p>
+
+<p>The purpose of this class is to point to a unique object that nothing else can point to, so we do not want to allow copying of the pointer. To do this, we override the copy constructor and assignment operators.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">UniqueResource</span><span class="p">(</span><span class="k">const</span> <span class="n">UniqueResource</span> <span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+<span class="n">UniqueResource</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">UniqueResource</span> <span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>Next, let’s define the move constructor. Teaching move semantics in their entirety are outside the scope of this article, but I would suggest googling and doing some reading online about them if you are not familiar. The general idea with move semantics is that we want to assign ownership of some data type from one object to another without actually copying the value of that data and storing it somewhere else in memory, which is what a traditional assignment does. With move semantics, we also ensure only a single object owns the data at one time. This accomplishes both our uniqueness goal and will come in handy when working with very large data structs that are inefficient to copy. So, our move constructor should assign the value of its <code class="language-plaintext highlighter-rouge">ptr</code> to the place in memory the <code class="language-plaintext highlighter-rouge">other.ptr</code> points to. It should also update the <code class="language-plaintext highlighter-rouge">other.ptr</code> value so that it no longer points to the object after the assignment.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">UniqueResource</span><span class="p">(</span><span class="n">UniqueResource</span> <span class="o">&amp;&amp;</span><span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">:</span> <span class="n">ptr</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">ptr</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="n">other</span><span class="p">.</span><span class="n">ptr</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>Next, we’ll also need to implement a move assignment operator. The move assignment will be utilized when we want to move ownership from one object to another, whereas the move constructor is used a new object is being initialized using an rvalue. With the move assignment, we’ll need to delete the existing data on the object being assigned to, move the ownership over, and then set the data on the “other” object to an initialied state. In our case, that means the following:</p>
+<ol>
+  <li>delete existing <code class="language-plaintext highlighter-rouge">ptr</code> on object being assigned to</li>
+  <li>assign value of <code class="language-plaintext highlighter-rouge">ptr</code> to value of <code class="language-plaintext highlighter-rouge">other.ptr</code></li>
+  <li>nullify <code class="language-plaintext highlighter-rouge">other.ptr</code></li>
+</ol>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">UniqueResource</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">UniqueResource</span> <span class="o">&amp;&amp;</span><span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span>
+    <span class="p">{</span>
+        <span class="c1">// check not assigning to self</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// delete existing data on this object</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">is_array</span><span class="p">)</span>
+                <span class="k">delete</span><span class="p">[]</span> <span class="n">ptr</span><span class="p">;</span>
+            <span class="k">else</span>
+                <span class="k">delete</span> <span class="n">ptr</span><span class="p">;</span>
+            <span class="c1">// assign ptr address from other to this object</span>
+            <span class="n">ptr</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">ptr</span><span class="p">;</span>
+            <span class="c1">// set other ptr address to a default value of nullptr</span>
+            <span class="n">other</span><span class="p">.</span><span class="n">ptr</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p>After this, I also added a few more overrides to make working with this data struct easier. For example, I added overrides for the following ops:</p>
+<ul>
+  <li>equality</li>
+  <li>inequality</li>
+  <li>indexing</li>
+  <li>resource access</li>
+</ul>
+
+<p>Here is the final <code class="language-plaintext highlighter-rouge">UniqueResource</code> definition.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#pragma once
+#include</span> <span class="cpf">&lt;cstddef&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp">
+</span>
+<span class="k">template</span> <span class="o">&lt;</span><span class="k">typename</span> <span class="nc">T</span><span class="p">&gt;</span>
+<span class="k">class</span> <span class="nc">UniqueResource</span>
+<span class="p">{</span>
+<span class="nl">private:</span>
+    <span class="n">T</span> <span class="o">*</span><span class="n">ptr</span><span class="p">;</span>
+    <span class="kt">bool</span> <span class="n">is_array</span><span class="p">;</span>
+
+<span class="nl">public:</span>
+    <span class="c1">// Constructor</span>
+    <span class="k">explicit</span> <span class="n">UniqueResource</span><span class="p">(</span><span class="n">T</span> <span class="o">*</span><span class="n">obj</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">)</span> <span class="o">:</span> <span class="n">ptr</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="n">is_array</span><span class="p">(</span><span class="nb">false</span><span class="p">)</span> <span class="p">{};</span>
+    <span class="c1">// Constructor for arrays</span>
+    <span class="n">UniqueResource</span><span class="p">(</span><span class="n">T</span> <span class="o">*</span><span class="n">obj</span><span class="p">,</span> <span class="kt">bool</span> <span class="n">array_flag</span><span class="p">)</span> <span class="o">:</span> <span class="n">ptr</span><span class="p">(</span><span class="n">obj</span><span class="p">),</span> <span class="n">is_array</span><span class="p">(</span><span class="n">array_flag</span><span class="p">)</span> <span class="p">{}</span>
+
+    <span class="c1">// Destructor</span>
+    <span class="o">~</span><span class="n">UniqueResource</span><span class="p">()</span> <span class="k">noexcept</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">is_array</span><span class="p">)</span>
+            <span class="k">delete</span><span class="p">[]</span> <span class="n">ptr</span><span class="p">;</span>
+        <span class="k">else</span>
+            <span class="k">delete</span> <span class="n">ptr</span><span class="p">;</span>
+    <span class="p">};</span>
+
+    <span class="c1">// Copy constructor and assignment - think about what you should do with these</span>
+    <span class="c1">// Want to disable copying in this class because it is meant to be Unique.</span>
+    <span class="c1">// If we copied pointer addr from A to B and A destructor deleter ptr, that would B with a dangling ptr.</span>
+    <span class="n">UniqueResource</span><span class="p">(</span><span class="k">const</span> <span class="n">UniqueResource</span> <span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+    <span class="n">UniqueResource</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="k">const</span> <span class="n">UniqueResource</span> <span class="o">&amp;</span><span class="p">)</span> <span class="o">=</span> <span class="k">delete</span><span class="p">;</span>
+
+    <span class="c1">// Move constructor and assignment</span>
+    <span class="n">UniqueResource</span><span class="p">(</span><span class="n">UniqueResource</span> <span class="o">&amp;&amp;</span><span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">:</span> <span class="n">ptr</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">ptr</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">other</span><span class="p">.</span><span class="n">ptr</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">UniqueResource</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">UniqueResource</span> <span class="o">&amp;&amp;</span><span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span>
+    <span class="p">{</span>
+        <span class="c1">// check not assigning to self</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// delete existing data on this object</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">is_array</span><span class="p">)</span>
+                <span class="k">delete</span><span class="p">[]</span> <span class="n">ptr</span><span class="p">;</span>
+            <span class="k">else</span>
+                <span class="k">delete</span> <span class="n">ptr</span><span class="p">;</span>
+            <span class="c1">// assign ptr address from other to this object</span>
+            <span class="n">ptr</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">ptr</span><span class="p">;</span>
+            <span class="c1">// set other ptr address to a default value of nullptr</span>
+            <span class="n">other</span><span class="p">.</span><span class="n">ptr</span> <span class="o">=</span> <span class="nb">nullptr</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="k">operator</span><span class="o">==</span><span class="p">(</span><span class="n">UniqueResource</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">ptr</span> <span class="o">==</span> <span class="n">other</span><span class="p">.</span><span class="n">get</span><span class="p">();</span>
+    <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="k">operator</span><span class="o">!=</span><span class="p">(</span><span class="n">UniqueResource</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="o">!</span><span class="p">(</span><span class="o">*</span><span class="k">this</span> <span class="o">==</span> <span class="n">other</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Non-const version for modifiable access</span>
+    <span class="n">T</span> <span class="o">&amp;</span><span class="k">operator</span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">index</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ptr</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Not an array resource."</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">ptr</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Const version for read-only access</span>
+    <span class="k">const</span> <span class="n">T</span> <span class="o">&amp;</span><span class="k">operator</span><span class="p">[](</span><span class="n">std</span><span class="o">::</span><span class="kt">size_t</span> <span class="n">index</span><span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="o">!</span><span class="n">ptr</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">runtime_error</span><span class="p">(</span><span class="s">"Null pointer access"</span><span class="p">);</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">ptr</span><span class="p">[</span><span class="n">index</span><span class="p">];</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Resource access</span>
+    <span class="n">T</span> <span class="o">*</span><span class="n">get</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">ptr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">T</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">*</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="o">*</span><span class="n">ptr</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">T</span> <span class="o">*</span><span class="k">operator</span><span class="o">-&gt;</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="n">ptr</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+</code></pre></div></div>
+
+<h3 id="matrix-multiply-example-with-uniqueresource">Matrix Multiply Example with UniqueResource</h3>
+
+<p>To showcase how the <code class="language-plaintext highlighter-rouge">UniqueResource</code> class can be utilized in the context of machine learning, I implemented a <code class="language-plaintext highlighter-rouge">Matrix</code> class that uses the <code class="language-plaintext highlighter-rouge">UniqueResource</code> data struct to store matrices and perform operations on them. This implementation does not utilize CUDA at all, but it could in future iterations. Here is the full code for the example.</p>
+
+<div class="language-cpp highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">#include</span> <span class="cpf">"unique_resource/unique_resource.h"</span><span class="cp">
+#include</span> <span class="cpf">&lt;cstddef&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;stdexcept&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;random&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;iostream&gt;</span><span class="cp">
+#include</span> <span class="cpf">&lt;immintrin.h&gt;</span><span class="cp">
+</span>
+<span class="k">using</span> <span class="k">namespace</span> <span class="n">std</span><span class="p">;</span>
+<span class="k">class</span> <span class="nc">NullPtrMatrix</span> <span class="o">:</span> <span class="k">public</span> <span class="n">exception</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">what</span><span class="p">()</span> <span class="k">const</span> <span class="k">throw</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="s">"Retrieved a matrix that is a nullptr!"</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">IncompatibleMatricesForOperation</span> <span class="o">:</span> <span class="k">public</span> <span class="n">exception</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">what</span><span class="p">()</span> <span class="k">const</span> <span class="k">throw</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="s">"Attempted a matrix operatioin with two matrices with incompatble dimensions."</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="k">class</span> <span class="nc">Matrix</span>
+<span class="p">{</span>
+<span class="nl">public:</span>
+    <span class="kt">size_t</span> <span class="n">num_rows</span><span class="p">;</span>
+    <span class="kt">size_t</span> <span class="n">num_cols</span><span class="p">;</span>
+    <span class="n">UniqueResource</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">data</span><span class="p">;</span>
+
+    <span class="c1">// Constructors and destructor</span>
+    <span class="n">Matrix</span><span class="p">()</span> <span class="o">:</span> <span class="n">num_rows</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">num_cols</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="n">data</span><span class="p">(</span><span class="nb">nullptr</span><span class="p">)</span> <span class="p">{};</span>
+    <span class="n">Matrix</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">x</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">y</span><span class="p">)</span> <span class="o">:</span> <span class="n">num_rows</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">num_cols</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">data</span><span class="p">(</span><span class="k">new</span> <span class="kt">float</span><span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">],</span> <span class="nb">true</span><span class="p">)</span> <span class="p">{};</span>
+    <span class="n">Matrix</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">x</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">y</span><span class="p">,</span> <span class="kt">float</span> <span class="o">*</span><span class="n">initial_data</span><span class="p">)</span>
+        <span class="o">:</span> <span class="n">num_rows</span><span class="p">(</span><span class="n">x</span><span class="p">),</span> <span class="n">num_cols</span><span class="p">(</span><span class="n">y</span><span class="p">),</span> <span class="n">data</span><span class="p">(</span><span class="n">initial_data</span><span class="p">,</span> <span class="nb">true</span><span class="p">)</span> <span class="p">{};</span>
+
+    <span class="o">~</span><span class="n">Matrix</span><span class="p">()</span> <span class="p">{};</span>
+
+    <span class="c1">// Move constructor</span>
+    <span class="n">Matrix</span><span class="p">(</span><span class="n">Matrix</span> <span class="o">&amp;&amp;</span><span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span> <span class="o">:</span> <span class="n">num_rows</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">num_rows</span><span class="p">),</span> <span class="n">num_cols</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">num_cols</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">data</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="k">static</span> <span class="n">Matrix</span> <span class="n">build_matrix</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">rows</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">cols</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">Matrix</span> <span class="n">m</span><span class="p">;</span>
+        <span class="n">m</span><span class="p">.</span><span class="n">num_rows</span> <span class="o">=</span> <span class="n">rows</span><span class="p">;</span>
+        <span class="n">m</span><span class="p">.</span><span class="n">num_cols</span> <span class="o">=</span> <span class="n">cols</span><span class="p">;</span>
+        <span class="n">m</span><span class="p">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">UniqueResource</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span><span class="p">(</span><span class="k">new</span> <span class="kt">float</span><span class="p">[</span><span class="n">rows</span> <span class="o">*</span> <span class="n">cols</span><span class="p">]);</span>
+
+        <span class="k">return</span> <span class="n">m</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// Move assignment</span>
+    <span class="n">Matrix</span> <span class="o">&amp;</span><span class="k">operator</span><span class="o">=</span><span class="p">(</span><span class="n">Matrix</span> <span class="o">&amp;&amp;</span><span class="n">other</span><span class="p">)</span> <span class="k">noexcept</span>
+    <span class="p">{</span>
+        <span class="c1">// check not assigning to self</span>
+        <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="o">!=</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="c1">// don't need to delete data b/c move assignment</span>
+            <span class="c1">// will delete the original ptr</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">other</span><span class="p">.</span><span class="n">data</span><span class="p">);</span>
+            <span class="n">num_rows</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">num_rows</span><span class="p">;</span>
+            <span class="n">num_cols</span> <span class="o">=</span> <span class="n">other</span><span class="p">.</span><span class="n">num_cols</span><span class="p">;</span>
+            <span class="n">other</span><span class="p">.</span><span class="n">num_rows</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+            <span class="n">other</span><span class="p">.</span><span class="n">num_cols</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="o">*</span><span class="k">this</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// getter function to retrieve data given x and y coordinates in 2D array</span>
+    <span class="kt">float</span> <span class="n">get</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">x</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">y</span><span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">num_rows</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">num_cols</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">_validate_matrix</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="n">_row_major_index</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+            <span class="k">return</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">out_of_range</span><span class="p">(</span><span class="s">"Index out of range."</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">set</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">x</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">y</span><span class="p">,</span> <span class="kt">float</span> <span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">num_rows</span> <span class="o">&amp;&amp;</span> <span class="n">x</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&lt;</span> <span class="n">num_cols</span> <span class="o">&amp;&amp;</span> <span class="n">y</span> <span class="o">&gt;=</span> <span class="mi">0</span> <span class="o">&amp;&amp;</span> <span class="n">_validate_matrix</span><span class="p">())</span>
+        <span class="p">{</span>
+            <span class="kt">size_t</span> <span class="n">index</span> <span class="o">=</span> <span class="n">_row_major_index</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">);</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+        <span class="p">}</span>
+        <span class="k">else</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">std</span><span class="o">::</span><span class="n">out_of_range</span><span class="p">(</span><span class="s">"Index out of range."</span><span class="p">);</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kt">size_t</span> <span class="n">get_num_rows</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">num_rows</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="kt">size_t</span> <span class="n">get_num_cols</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">num_cols</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="kt">bool</span> <span class="n">is_empty</span><span class="p">()</span> <span class="p">{</span> <span class="k">return</span> <span class="n">data</span><span class="p">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">;</span> <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">reset</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="n">num_rows</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">num_cols</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+        <span class="n">UniqueResource</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">temp</span><span class="p">;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">temp</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="n">Matrix</span> <span class="k">operator</span><span class="o">+</span><span class="p">(</span><span class="n">Matrix</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">num_rows</span> <span class="o">!=</span> <span class="n">other</span><span class="p">.</span><span class="n">num_rows</span> <span class="o">||</span> <span class="n">num_cols</span> <span class="o">!=</span> <span class="n">other</span><span class="p">.</span><span class="n">num_cols</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">IncompatibleMatricesForOperation</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="n">Matrix</span> <span class="n">result</span> <span class="o">=</span> <span class="n">build_matrix</span><span class="p">(</span><span class="n">num_rows</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">);</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_rows</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">num_cols</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="kt">size_t</span> <span class="n">global_index</span> <span class="o">=</span> <span class="n">_row_major_index</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">);</span>
+                <span class="n">result</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">global_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">global_index</span><span class="p">]</span> <span class="o">+</span> <span class="n">other</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">global_index</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="n">Matrix</span> <span class="k">operator</span><span class="o">*</span><span class="p">(</span><span class="n">Matrix</span> <span class="k">const</span> <span class="o">&amp;</span><span class="n">other</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">num_cols</span> <span class="o">!=</span> <span class="n">other</span><span class="p">.</span><span class="n">num_rows</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">IncompatibleMatricesForOperation</span><span class="p">();</span>
+        <span class="p">}</span>
+
+        <span class="c1">// create temporary matrix data</span>
+        <span class="n">Matrix</span> <span class="n">result</span> <span class="o">=</span> <span class="n">build_matrix</span><span class="p">(</span><span class="n">num_rows</span><span class="p">,</span> <span class="n">other</span><span class="p">.</span><span class="n">num_cols</span><span class="p">);</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_rows</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="c1">// Iterate over rows of first matrix</span>
+        <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">other</span><span class="p">.</span><span class="n">num_cols</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span> <span class="c1">// Iterates over cols of second matrix</span>
+            <span class="p">{</span>
+                <span class="kt">float</span> <span class="n">value</span> <span class="o">=</span> <span class="mf">0.0</span><span class="p">;</span>
+                <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">&lt;</span> <span class="n">num_cols</span><span class="p">;</span> <span class="o">++</span><span class="n">k</span><span class="p">)</span> <span class="c1">// Iterates over cols of first matrix</span>
+                <span class="c1">// Computes dot product of ith row of 1st matrix and jth col of 2nd matrix</span>
+                <span class="p">{</span>
+                    <span class="n">value</span> <span class="o">+=</span> <span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">num_cols</span> <span class="o">+</span> <span class="n">k</span><span class="p">]</span> <span class="o">*</span> <span class="n">other</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">k</span> <span class="o">*</span> <span class="n">other</span><span class="p">.</span><span class="n">num_cols</span> <span class="o">+</span> <span class="n">j</span><span class="p">];</span>
+                <span class="p">}</span>
+                <span class="n">result</span><span class="p">.</span><span class="n">data</span><span class="p">[</span><span class="n">i</span> <span class="o">*</span> <span class="n">num_cols</span> <span class="o">+</span> <span class="n">j</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">result</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">T</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="c1">// create temporary matrix data</span>
+        <span class="n">UniqueResource</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">temp</span><span class="p">{</span><span class="k">new</span> <span class="kt">float</span><span class="p">[</span><span class="n">num_cols</span> <span class="o">*</span> <span class="n">num_rows</span><span class="p">],</span> <span class="nb">true</span><span class="p">};</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_rows</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">num_cols</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="kt">size_t</span> <span class="n">new_row</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+                <span class="kt">size_t</span> <span class="n">new_col</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+                <span class="kt">size_t</span> <span class="n">original_index</span> <span class="o">=</span> <span class="n">_row_major_index</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">);</span>
+                <span class="kt">size_t</span> <span class="n">new_index</span> <span class="o">=</span> <span class="n">_row_major_index</span><span class="p">(</span><span class="n">new_row</span><span class="p">,</span> <span class="n">new_col</span><span class="p">);</span>
+
+                <span class="n">temp</span><span class="p">[</span><span class="n">new_index</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">original_index</span><span class="p">];</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1">// move ownership of temp resources to data</span>
+        <span class="c1">// data now holds Transposed matrix!</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">std</span><span class="o">::</span><span class="n">move</span><span class="p">(</span><span class="n">temp</span><span class="p">);</span>
+        <span class="n">std</span><span class="o">::</span><span class="n">swap</span><span class="p">(</span><span class="n">num_rows</span><span class="p">,</span> <span class="n">num_cols</span><span class="p">);</span>
+    <span class="p">}</span>
+
+    <span class="kt">void</span> <span class="n">print</span><span class="p">()</span>
+    <span class="p">{</span>
+        <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="n">num_rows</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">j</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">j</span> <span class="o">&lt;</span> <span class="n">num_cols</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+            <span class="p">{</span>
+                <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">get</span><span class="p">(</span><span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="s">" "</span><span class="p">;</span>
+            <span class="p">}</span>
+            <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="nl">private:</span>
+    <span class="c1">// matrix data stored in 1D array in row-major layout</span>
+    <span class="c1">// convert 2D index to 1D index</span>
+    <span class="kt">size_t</span> <span class="n">_row_major_index</span><span class="p">(</span><span class="kt">size_t</span> <span class="n">row</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">col</span><span class="p">)</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">row</span> <span class="o">*</span> <span class="n">num_cols</span><span class="p">)</span> <span class="o">+</span> <span class="n">col</span><span class="p">;</span>
+    <span class="p">}</span>
+
+    <span class="c1">// validate matrix stored in data ptr is not null</span>
+    <span class="kt">bool</span> <span class="n">_validate_matrix</span><span class="p">()</span> <span class="k">const</span>
+    <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">data</span><span class="p">.</span><span class="n">get</span><span class="p">()</span> <span class="o">==</span> <span class="nb">nullptr</span><span class="p">)</span>
+        <span class="p">{</span>
+            <span class="k">throw</span> <span class="n">NullPtrMatrix</span><span class="p">();</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="nb">true</span><span class="p">;</span>
+    <span class="p">}</span>
+<span class="p">};</span>
+
+<span class="kt">int</span> <span class="n">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="c1">// create 10x10 matrix</span>
+    <span class="kt">size_t</span> <span class="n">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="kt">size_t</span> <span class="n">y</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="o">*</span><span class="n">array_a</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">float</span><span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">];</span>
+    <span class="kt">float</span> <span class="o">*</span><span class="n">array_b</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">float</span><span class="p">[</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">];</span>
+
+    <span class="c1">// Create a random number generator</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">random_device</span> <span class="n">rd</span><span class="p">;</span>                               <span class="c1">// Seed for randomness</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">mt19937</span> <span class="n">gen</span><span class="p">(</span><span class="n">rd</span><span class="p">());</span>                              <span class="c1">// Mersenne Twister engine</span>
+    <span class="n">std</span><span class="o">::</span><span class="n">uniform_real_distribution</span><span class="o">&lt;</span><span class="kt">float</span><span class="o">&gt;</span> <span class="n">dis</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">);</span> <span class="c1">// Range [0.0, 1.0]</span>
+
+    <span class="k">for</span> <span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="n">y</span><span class="p">);</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+    <span class="p">{</span>
+        <span class="n">array_a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="p">(</span><span class="n">gen</span><span class="p">);</span>
+        <span class="n">array_b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">dis</span><span class="p">(</span><span class="n">gen</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Initialized random arrays of size: "</span> <span class="o">&lt;&lt;</span> <span class="n">x</span> <span class="o">*</span> <span class="n">y</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// create matrix A</span>
+    <span class="n">Matrix</span> <span class="n">A</span><span class="p">{</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">array_a</span><span class="p">};</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Matrix A: "</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">A</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"-------------------------------"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// create matrix B</span>
+    <span class="n">Matrix</span> <span class="n">B</span><span class="p">{</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">array_b</span><span class="p">};</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Matrix B: "</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">B</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"-------------------------------"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// test Matrix addition</span>
+    <span class="n">Matrix</span> <span class="n">C</span> <span class="o">=</span> <span class="n">A</span> <span class="o">+</span> <span class="n">B</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Result of Matrix Addition (A+B)"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">C</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"-------------------------------"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+
+    <span class="c1">// Transpose matrix C</span>
+    <span class="n">C</span><span class="p">.</span><span class="n">T</span><span class="p">();</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Transpose of Matrix C:"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">C</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"-------------------------------"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Matrix Multiplication"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="kt">float</span> <span class="o">*</span><span class="n">array_d</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">float</span><span class="p">[</span><span class="mi">4</span><span class="p">]{</span><span class="mf">2.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">2.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">,</span> <span class="mf">3.0</span><span class="p">};</span>
+    <span class="kt">float</span> <span class="o">*</span><span class="n">array_e</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">float</span><span class="p">[</span><span class="mi">4</span><span class="p">]{</span><span class="o">-</span><span class="mf">1.0</span><span class="p">,</span> <span class="mf">4.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="o">-</span><span class="mf">6.0</span><span class="p">};</span>
+    <span class="n">Matrix</span> <span class="n">D</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">array_d</span><span class="p">};</span>
+    <span class="n">Matrix</span> <span class="n">E</span><span class="p">{</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">array_e</span><span class="p">};</span>
+
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Matrix D:"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">D</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Matrix E:"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">E</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+
+    <span class="n">Matrix</span> <span class="n">F</span> <span class="o">=</span> <span class="n">D</span> <span class="o">*</span> <span class="n">E</span><span class="p">;</span>
+    <span class="n">cout</span> <span class="o">&lt;&lt;</span> <span class="s">"Result of D*E:"</span> <span class="o">&lt;&lt;</span> <span class="n">endl</span><span class="p">;</span>
+    <span class="n">F</span><span class="p">.</span><span class="n">print</span><span class="p">();</span>
+
+    <span class="k">return</span> <span class="mi">0</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+        </div>
+
+        <footer class="post-footer">
+            <nav class="post-navigation">
+                
+                    <a href="/2025/01/06/Optimizing-attention-based-flower-classification-for-edge-tpu-training-to-deployment/" class="hero-link secondary">← Optimizing Attention Based Flower Classification For Edge Tpu: Training To Deployment</a>
+                
+                
+                    <a href="/2025/09/21/The-Grid-Book-Report/" class="hero-link secondary">The Grid Book Report →</a>
+                
+            </nav>
+            
+            <div style="margin-top: 2rem;">
+                <a href="/blog/" class="hero-link">← Back to Blog</a>
+            </div>
+        </footer>
+    </article>
+</div>
+
+<style>
+.blog-post {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.post-header {
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.post-meta {
+    margin-top: 0.5rem;
+    color: var(--text-secondary);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.post-tags {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.post-content {
+    line-height: 1.8;
+    font-size: 1.1rem;
+}
+
+.post-content h2,
+.post-content h3,
+.post-content h4 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+}
+
+.post-content blockquote {
+    border-left: 4px solid var(--primary-color);
+    margin: 1.5rem 0;
+    padding: 1rem 1.5rem;
+    background: var(--background-secondary);
+    border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+
+.post-content code {
+    background: var(--background-secondary);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    border: 1px solid var(--border-color);
+}
+
+.post-content pre {
+    background: var(--background-secondary);
+    padding: 1rem;
+    border-radius: var(--border-radius);
+    overflow-x: auto;
+    border: 1px solid var(--border-color);
+}
+
+.post-content pre code {
+    background: none;
+    padding: 0;
+    border: none;
+}
+
+.post-footer {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.post-navigation {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    .post-navigation {
+        flex-direction: column;
+    }
+    
+    .post-meta {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+</style>
+    </main>
+
+    <footer>
+        <ul class="social-links">
+            <li><a href="https://github.com/ixmorrow" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                </svg>
+            </a></li>
+            <li><a href="https://www.linkedin.com/in/ivan-morrow-profile/" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                </svg>
+            </a></li>
+            <li><a href="https://twitter.com/ivan_morrow" target="_blank" rel="noopener noreferrer" aria-label="Twitter">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M23.953 4.57a10 10 0 01-2.825.775 4.958 4.958 0 002.163-2.723c-.951.555-2.005.959-3.127 1.184a4.92 4.92 0 00-8.384 4.482C7.69 8.095 4.067 6.13 1.64 3.162a4.822 4.822 0 00-.666 2.475c0 1.71.87 3.213 2.188 4.096a4.904 4.904 0 01-2.228-.616v.06a4.923 4.923 0 003.946 4.827 4.996 4.996 0 01-2.212.085 4.936 4.936 0 004.604 3.417 9.867 9.867 0 01-6.102 2.105c-.39 0-.779-.023-1.17-.067a13.995 13.995 0 007.557 2.209c9.053 0 13.998-7.496 13.998-13.985 0-.21 0-.42-.015-.63A9.935 9.935 0 0024 4.59z"/>
+                </svg>
+            </a></li>
+            
+            <li><a href="https://www.goodreads.com/user/show/184595895-ivan" target="_blank" rel="noopener noreferrer" aria-label="Goodreads">
+                📚
+            </a></li>
+            
+        </ul>
+        <p>&copy; 2025 Ivan Morrow. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Dark mode toggle functionality
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.querySelector('.theme-icon');
+            const currentTheme = body.getAttribute('data-theme');
+            
+            if (currentTheme === 'dark') {
+                body.removeAttribute('data-theme');
+                themeIcon.textContent = '🌙';
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+                localStorage.setItem('theme', 'dark');
+            }
+        }
+
+        // Load saved theme on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            const themeIcon = document.querySelector('.theme-icon');
+            
+            if (savedTheme === 'dark') {
+                document.body.setAttribute('data-theme', 'dark');
+                themeIcon.textContent = '☀️';
+            } else {
+                themeIcon.textContent = '🌙';
+            }
+        });
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

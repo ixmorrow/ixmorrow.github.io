@@ -15,6 +15,7 @@ title: Home
         <div class="hero-links">
             <a href="/cv/" class="hero-link">📄 My CV</a>
             <a href="/blog/" class="hero-link secondary">✍️ Technical Blog</a>
+            <a href="https://substack.com/@ivan850655" target="_blank" class="hero-link secondary">📰 Substack</a>
             <a href="/projects/" class="hero-link secondary">🚀 Projects</a>
         </div>
     </div>

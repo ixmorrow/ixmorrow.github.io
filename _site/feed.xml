@@ -1,0 +1,597 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.9.5">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2025-12-15T07:27:55-06:00</updated><id>http://localhost:4000/feed.xml</id><title type="html">Ivan Morrow</title><subtitle>A personal website for showcasing my CV, technical blogs, projects, and more.</subtitle><entry><title type="html">The Grid Summary</title><link href="http://localhost:4000/2025/10/02/the-grid-summary/" rel="alternate" type="text/html" title="The Grid Summary" /><published>2025-10-02T00:00:00-05:00</published><updated>2025-10-02T00:00:00-05:00</updated><id>http://localhost:4000/2025/10/02/the-grid-summary</id><content type="html" xml:base="http://localhost:4000/2025/10/02/the-grid-summary/"><![CDATA[# What a 2016 Book About the Grid Taught Me in 2025
+
+I just started a new role as a Senior Software Engineer at [ElectronX](https://www.electronx.com), working at the intersection of energy infrastructure and technology. I have worked in the HFT/Market Making space for years, but my interests have shifted toward something more fundamental: the infrastructure powering our increasingly electrified world.
+
+So I did what any newly curious engineer does. I picked up a book. *The Grid: The Fraying Wires Between Americans and Our Energy Future* by Gretchen Bakke came highly recommended. Published in 2016, it's a deep dive into how America's electrical grid actually works and why modernizing it is so challenging.
+
+Here's what surprised me: reading a nearly decade-old book about the grid was more interesting *because* it's dated. The changes since 2016 are so dramatic that the book serves as an accidental time capsule, showing just how rapidly the energy transition is accelerating. This post captures what I learned and, more importantly, what's changed since publication.
+
+## How the Grid Actually Works (The Basics I Didn't Know)
+
+Before diving into what's changed, I needed to understand what the grid actually *is*. 
+
+The grid is essentially an interconnection of machines and wires spread across regions. There are multiple grids in the U.S., separated geographically. Its purpose is deceptively simple: deliver electrons from power producers to consumers, instantaneously.
+
+The critical constraint that governs everything: **supply must always match demand**. Not approximately. Not on average. Always.
+
+When you plug something into an outlet, you're creating a new path for electrons to flow. Electrons flow through all available paths simultaneously, and the system must respond in real-time. If demand spikes and utilities aren't prepared to ramp up generation, we get blackouts. If plants are ramped up and demand drops unexpectedly, that also causes problems.
+
+This fundamental requirement is why the grid is so complex and why adding renewables has been challenging.
+
+## The Renewables Integration Challenge
+
+Renewables (solar, wind, hydro) are transformative because they generate electricity without emitting CO2 or consuming finite resources. But they introduce a problem the grid wasn't designed to handle: **variability**.
+
+A coal plant can generate electricity regardless of weather or time of day. Solar panels cannot. The grid was designed for consistent, predictable loads from dispatchable generation sources. Variable generation doesn't mesh well with this architecture.
+
+Bakke emphasized that without a solution to store energy when renewables overproduce and release it when they underproduce, renewables would remain limited. In 2016, she noted that grid-scale batteries weren't economically viable or performant enough to solve this problem.
+
+**This is perhaps the biggest thing that's changed since publication.**
+
+An interesting benchmark from the book: coal plants can ramp up to 50% of capacity in 5 minutes, natural gas in 10 minutes, and nuclear in 24 hours. This explains why coal and gas have been so valuable for grid stability, they're flexible and responsive.
+
+But here's the sobering fact that really landed with me: coal-burning power plants are the largest producers of CO2 emissions in the United States. Not transportation. Not industrial manufacturing. Coal power plants.
+
+I knew coal plants emitted CO2, but understanding they're the *biggest* contributor fundamentally changed how I think about the energy transition. Yes, manufacturing solar panels produces emissions. But what they're replacing operates at such a vastly greater scale of emissions that it's not even close. Solar isn't perfect, but it's objectively better when optimizing for CO2 reduction.
+
+## What's Changed Since 2016: The Numbers Are Stunning
+
+When Bakke wrote the book, renewables represented approximately 13% of U.S. electricity generation capacity. 
+
+By 2023, that jumped to **21.4%**. As of 2024, it's **24.4%**. ([2023](https://www.eia.gov/tools/faqs/faq.php?id=427&t=3), [2024](https://electrek.co/2025/02/27/renewables-generated-24-percent-us-electricity-2024-eia-data/#:~:text=Utility%2Dscale%20and%20%60%60estimated%27%27%20small%2Dscale%20(e.g.%2C%20rooftop)%20solar,reviewed%20EIA%27s%20%60%60Electric%20Power%20Monthly%27%27%20report%20data.))
+
+Let me repeat that: nearly a quarter of America's electricity now comes from renewable sources. That's remarkable progress in less than a decade, and probably much higher than most people realize.
+
+But the acceleration story gets even more interesting when you look at *new* generation capacity:
+
+- **2014**: 53.3% of new generation capacity came from wind or solar
+- **2024**: 90% of new generation capacity came from renewables, with solar accounting for 78% [Source](https://environmentamerica.org/center/updates/90-of-new-electricity-capacity-in-2024-to-date-comes-from-renewables/)
+
+This is exponential acceleration. Not only are we generating more electricity from renewables, but the rate at which we're adding renewable capacity is increasing dramatically. This suggests the next decade could see even more rapid adoption.
+
+Two major factors driving this:
+
+1. **Solar costs have continued to plummet**. The cost curve since 2016 has been even steeper than optimistic projections.
+
+2. **Battery technology has transformed**. The economically unviable grid-scale batteries of 2016 are now being deployed at scale. Prices per kWh have dropped dramatically, and new chemistries have improved performance and longevity.
+
+## The Wild Card: AI and Datacenter Demand
+
+Here's where things get complicated and directly relevant to my new role.
+
+For the first time in years, [electricity demand in the U.S. is increasing](https://www.eia.gov/todayinenergy/detail.php?id=65264#) and it's accelerating rapidly. The primary driver is AI and the associated buildout of datacenters and compute infrastructure. This demand spike is unprecedented in its pace and scale.
+
+This creates tension in the energy transition. When utilities need to add capacity quickly to meet surging demand, they often reach for the fastest, easiest option: natural gas or even coal. But the demand spike is also driving renewed interest in nuclear power, with tech companies exploring everything from traditional plants to Small Modular Reactors (SMRs).
+
+Interestingly, the same battery improvements that enable renewable integration could also enable datacenters to pair on-site solar farms with grid-scale battery storage—generating during peak sun hours and drawing from batteries overnight. Whether this becomes standard practice or whether the urgency drives us back toward fossil fuels remains one of the most important questions in energy right now.
+
+## What I'm Investigating Next
+
+My biggest takeaway from this book is how much I *don't* know about grid-scale battery storage. The technology has clearly advanced since 2016, but I have many unanswered questions:
+
+- What is the actual lifetime of modern solar arrays and battery systems?
+- What happens at end-of-life? How much can be recycled versus disposed of?
+- Where are materials sourced, and what are the geopolitical and environmental implications?
+- What are the real-world economics of solar + storage projects today versus five years ago?
+
+I also want to dig deeper into the nuclear renaissance. Bakke seemed to write off nuclear in 2016, but sentiment has shifted dramatically. Understanding why feels important.
+
+Finally, I'm curious about the intersection of software and grid management. How are modern grid operators using software to handle variable generation? What does a virtual power plant actually look like? How are datacenters negotiating power purchase agreements?
+
+These questions will form the basis of my next several posts. I'm learning in public here, so if you have expertise in any of these areas or recommendations for what to read next, I'd love to hear from you.
+
+---
+
+**Coming next**: A deep dive into the battery revolution—how costs, chemistry, and deployment have changed from 2016 to 2025, and why this matters for the future of renewables and the grid.]]></content><author><name></name></author><summary type="html"><![CDATA[What a 2016 Book About the Grid Taught Me in 2025]]></summary></entry><entry><title type="html">Ddia Chapter 1 Summary</title><link href="http://localhost:4000/2025/10/01/ddia-chapter-1-summary/" rel="alternate" type="text/html" title="Ddia Chapter 1 Summary" /><published>2025-10-01T00:00:00-05:00</published><updated>2025-10-01T00:00:00-05:00</updated><id>http://localhost:4000/2025/10/01/ddia-chapter-1-summary</id><content type="html" xml:base="http://localhost:4000/2025/10/01/ddia-chapter-1-summary/"><![CDATA[# Chapter 1: Reliable, Scalable, and Maintainable Applications
+
+Chapter 1 focused on three key topics in distributed systems: reliability, scalability, and maintainability. The chapter defines each of these important topics, provides some best practices for achieving each, and gives real-world examples of how they can be applied to distributed systems. While reading this chapter, I found myself relating a lot of what I read back to my experience over the last five years building and maintaining the cloud and distributed trading system at Belvedere. 
+
+Reliability is defined as the ability for a system to work correctly even in the face of adversity. Correctly means performing the correct function at the desired level of performance. Reliability is a core tenet of distributed systems and something I am intimately familiar with. There are entire careers dedicated to ensuring the reliability of different software systems and it requires some very interesting engineering. One of the main culprits of diminishing the reliability of a system are "faults". Faults are just things that can go wrong. When desiging a reliable system, it is imperative to anticipate the faults and architect your system to gracefully handle them. This is called fault-tolerance. Notable, the book mentions that a fault is not a failure. A failure is when the system as a whole stops providing the required service to the user. Whereas a fault, can result in the service still being available but maybe degraded or even providing incomplete (or incorrect) data.
+
+During my time at Belvedere, I spent two years as a pseudo Site Reliability Engineer on our hedging and autofitting products. Our hedging services monitored internal order flow and risk reports and sent orders to an exchange automatically in order to hedge the positions we built up throughout the day. This system was designed well before I joined, but there was a key feature in the design of our hedging system that caused a lot of issues (and also prevented some). In order for our traders to run the options execution services that would place making/taking options orders, the hedging services had to be up and running. The options trading services were designed to require a TCP connection to the hedging services in order to run and if that connection was broken, the options services would shut off. This was an intentional choice because if we can't hedge, then we shouldn't be trading options. However, this brought a lot of challenges from my perspective on the hedging side. The exchanges we sent our hedge orders to have exchange side safety settings. When the hedging services were designed, they were not designed to be fault-tolerant of these settings. Meaning when the exchange indicated we hit one of their safety settings, our hedging services would shut off. This ultimately led to hedging services shutting off in the middle of the trading day and caused our downstream options execution services to also shutoff. This led to downtime for our traders, time out of market, opportunity cost, and required manual intervention on both the hedging and options side. This led to some interesting conversations between engineering and trading. We built fault-tolerance around some of the exchange side safety settings that were causing issues, but we also determined that shutting everything off on others was the right move. I bring this up because it was a real-world example of a production issue related to reliability and fault-tolerance. However, it also shows that each scenario is unique and fault-tolerance may not be the best choice for every possible issue.
+
+Scalability is how a system is able to handle an increase in load, whether that load is in data volume, traffic volume, or complexity. Scalability is often associated with either increasing instances of a service to handle more requests (horizontal scaling), or increasing the amount of compute resources available to a service (vertical scaling). I most often associate scalability with Kubernetes. Kubernetes has become the de facto technology used for scalable workloads and it automates so much of what is required for scaling infrastructure for you. Designing scalable systems requires you to handle a few prerequisites before you can begin:
+
+- You must be able to describe the current load on the system via metrics. Without that data you cannot realistically plan for scalability.
+- If the system grows in a particular way, what are our options for coping with the growth?
+- How can we add computing resources to handle the additional load?
+
+Once you have the data to measure the performance of your system and you have answered the next two questions, you can actually design how your system will scale. I thought the book mentioned something really interesting in regards to thinking about scalability. It mentions how decitions around scaling are based on assumptions of which operations will be common and which will be rare. If these assumptions are wrong, then the engineering work used to implement the scaling becomes wasted effort. This stood out to me because of how it realates to early stage startups. Since I am joining an early stage startup next week, I think this is a point I would like to take with me and keep in the back of my mind. The book mentions how it is usually more important to be able to iterate quickly on product features than it is to scale to some hypothetical future load right away. This makes sense to me. The primary goal of a startup is to make money first and quickly. If I can design a system that will work for our initial projected load in a week versus design a scalable solution that scales to 100x our initial load in 3 months, then it is probably a better use of my time to choose the former. Coming from Belvedere, I think I already have a bit of that mentality. There was a big focus on getting systems deployed that worked quickly so that we could capitalize on opportunities in the market now. However, I also had to deal with a lot of legacy systems that followed this approach and were never re-architected to meet a larger demand/load and this caused a lot of headaches. I can see the need and argument for both.
+
+Lastly, maintainability is about making life better for the engineering and ops teams who need to work with the system. I have deep experience on the operations side of software systems and so designing something that is easily maintainable is something I really care about. Thinking about the supportability of a system while in the design phase is important and I've taken many lessons first-hand of what unsupportable software is like. The book mentions Netflix's "chaos monkey" and this is something I learned from my last manager at Belvedere. I was tasked with chaos testing all the systems I worked on while working with them and I am a big fan of it. I learned so much and caught many issues (or faults) while still in the testing phase from this. Because of chaos testing I was able to roll out more reliable and maintainable systems to production the first time around. I was not aware chaos testing was associated with Netflix, but that's cool to see that in this book.
+
+I will end this blog with a section I really enjoyed from the chapter on operations teams. Operations teams are vital to keeping a software system running smoothing. A good operations team typically is responsible for the following, and more:
+
+- Monitoring the health of the system and quickly restoring service if it goes into a bad state
+- Tracking down the cause of problems, such as system failures or degraded performance
+- Keeping software and platforms up to date , including security patches
+- Keeping tabes on how different systems affect each other, so that a problematic change can be avoided before it causes damage
+- Anticipating future problems and solving them before they occur (e.g. capacity planning)
+- Establishing good practices and tools for deployment, configuration management, and more
+- Performing complex maintenance tasks, such as moving an application from one platform to another
+- Maintaining the security of the system as configuration changes are made
+- Defining processes that make operations predictable and help keep the production environment stable
+- Preserving the organization's knowledge about the system
+
+Operations teams do a lot to keep software systems afloat and they learn a lot about how they perform in production! Please always design with your ops teams in mind and work with them. They often have a very unique perspective and might be able to provide insight during the design phase of your system.]]></content><author><name></name></author><summary type="html"><![CDATA[Chapter 1: Reliable, Scalable, and Maintainable Applications]]></summary></entry><entry><title type="html">The Grid Book Report</title><link href="http://localhost:4000/2025/09/21/The-Grid-Book-Report/" rel="alternate" type="text/html" title="The Grid Book Report" /><published>2025-09-21T00:00:00-05:00</published><updated>2025-09-21T00:00:00-05:00</updated><id>http://localhost:4000/2025/09/21/The-Grid-Book-Report</id><content type="html" xml:base="http://localhost:4000/2025/09/21/The-Grid-Book-Report/"><![CDATA[## The Grid: The Fraying Wires Between Americans and Our Energy by Gretchen Bakke, Ph.D
+
+[Amazon Link](https://www.amazon.com/Grid-Fraying-Between-Americans-Energy/dp/1632865688/ref=sr_1_1?crid=10DNTEOADH7HN&dib=eyJ2IjoiMSJ9.Y9Xj8vmtWUgIOwEz8hJhD7kTI9Eme5kPWVjYJ3KTg8ETwJpGLQ1r8kRVletPrckIRCH7cf9B0qfmb1Io-8mQEdf0SjP2zvOYH5ujMc-sv0V66uGTeVQJY0O2BlLOnjUcj8j4SoNxCWXnr3U5u5G7PJzlnXQgGyfp5B7Pv-bPpm3Gg11M84gre_TzV-c1Jeq8aOuosHLmQ3kOZtFsYhFnVhwNqfr-QzxP6a-ZitokfGk.0_k7bchfk4aTbJY71zO7UcqdjFWCRn8Bkte3BDyDoAw&dib_tag=se&keywords=the+grid+book&qid=1758485040&sprefix=the+grid%2Caps%2C166&sr=8-1)
+
+I learned a lot about the grid in this book and it definitely changed some of the preconceived notions I had. One of the biggest thoughts I had repeatedly while reading this book was that this book was published in 2016 and so much has changed in the world of electricity and renewables since then, especially over the last five years. So much so, that there were many points brought up in the book that are worth digging into how they have developed over the last ten years since publishing. I took notes while reading this book and my goal with this document is to help me memorize what I learned and synthesize those notes into more coherent thoughts.
+
+For starters, we have to understand what a grid is and how it functions. The grid is simply an interconnection of many different machines and wires spread throughout the country. There are multiple grids in the U.S., separated by region. The purpose of the grid is to serve as a delivery system of electrons from power producers to consumers. One of the most important things to know about the grid is that the delivery of electrons is relatively instantaneous and the amount of electrons being delivered must always match the demand. In other words, supply must always match demand. When one of these two gets out of sync with the other, that's when we have problems (i.e. blackouts/brownouts) with our grid. If demand spikes rapidly and the utility providers are not prepared to ramp up the power plants to meet that demand, that causes issues. If power plants are ramped up and demand dies down unexpectedly that also causes issues. The demand here simply comes from plugging something into an outlet, which connects it to the grid. This creates a new path for electrons on the grid to flow to. Electrons flow in all available paths simultaneously. 
+
+Renewables are all the talk these days in the energy space and that is because they allow for the creation of electricity (flow of electrons) without emitting CO2 into our atmosphere and do not require consumption of a finite resource on Earth to do so (solar, wind, hydro). The biggest problem with integrating renewables onto our grid is that the amount of electricity they generate is variable and dependent upon weather and time of day. They cannot always generate electricity regardless of outside factors like a coal burning power plat for example. The grid of the U.S. is an old system and was designed to handle consistent predictable loads. Therefore, it does not mesh well with variable loads. Additionally, the demand for electricity is always there. A solution to the variable generation of renewables is what is holding them back from replacing all non-renewable resources of electricity currently. The author talks about how grid-scale batteries could help solve this problem, but that at the time of writing there were no options economically viable and performant. This seems to have changed pretty drastically since then, as the price and performance of grid-scale batteries have changed drastically, for the better. Currently, the grid does not handle volatility in the supply or demand of electricity very well. Technologies that help balance that out could help build a more resilient grid.
+
+An interesting fact from the book is that coal plants can ramp up to 50% of electricity generation in 5 minutes, natural gas plants in 10 minutes, and nuclear in 24 hours. The book did not really talk a lot about nuclear and it seemed the author kind of wrote off nuclear as the right choice in the future. This fact does showcase why coal and natural gas plants would be so useful to our current grid. They are easy to scale up and down in a relatively short amount of time. However, another fact is that the largest producers of CO2 in the U.S. are coal burning plants for generating electricity. This is pretty surprising to me. Obviously, I knew coal plants produced CO2 and were contributing to climate change, however to hear that they are the biggest contributors in the U.S. really just drives home the need to replace them. In my opinion, it will be a very long time if not impossible for the U.S. or the world to eliminate CO2 production completely. However, any changes that eliminate the biggest contributors can have a significant impact on the acceleration of climate change. That is something that I don't think many people understand. People sometimes gripe about solar and wind as "renewable" in a way but that the process to create the Solar Panels specifically still contribute to CO2 emissions, which is true. However, it's clear that what they are replacing (coal power plants) are contributors of such a grander scale that it is a very good trade off. Solar is not perfect. However, it is an objectively better choice than what we primarily use today when you are optimizing for reducing CO2 emissions. I think when you start to compare solar to something like natural gas, the comparison gets a little harder but it is obvious when talking about coal.
+
+Since this book was published (2016), there have been some drastic changes to in the electricity world that I want to highlight. First and foremost, at the time of writing renewables represented ~13% of installed electricity generation in the U.S. In 2023, that has jumped to 21.4% and 24.4% in 2025! That is remarkable progress and it's great to see that trending in the right direction. It's actually very surprising to read those numbers. To say that today in America, a quarter of electricity generated is from renewable sources! That is awesome and is probably a lot higher than most realize. Another eye opening stat: In 2014, 53.3% of *new generation* is from wind or solar. In 2024, **90%** of *new generation* is from renewables, with solar accounting for 78%! That is absolutely insane to read. It shows that not only are we generating more and more electricity from renewables, but the acceleration of the addition of more renewables to the grid is increasing. This indicates that the pace of adoption of renewables is growing and I would expect that to translate to overall electricity from renewables to increase even more rapidly over the next ten years. A big factor in this is that the cost of solar has continued to drop significantly over the years. In addition to that, batteries are becoming more and more popular and more and more cheap. One major change that has the potential to alter or slow this progress is that the demand for electricity is increasing for the first time in a long time and at a very very rapid pace. This is primarily driven by ML/AI progress and the demand for AI companies for data centers and compute infra. This is rapidly increasing at a pace never before seen. This has the potential to cause utility providers to seek the easiest and quickest way to add more electrons to the grid to meet this demand. Many times, this is something like coal or natural gas. But, it has also triggered a higher demand for nuclear. It remains to be seen how this demand increase will impact renewable adoption. With the progress made in batteries, however, it could trigger data center operators to opt for a combination solar farm with grid-scale battery packs to store excess electricity during peak hours and use that load after the sun has set.
+
+One of my biggest take aways after reading this book is that I want to learn more about the adoption and status of grid-scale battery storage. From what I have heard and read in the media in recent years, battery prices have come down dramatically and performance has gone up due to new chemistries and techniques. If that is true, I don't know why there are not more and more solar farms popping up all over paired with battery storage (maybe there are and I am not aware). To me this seems like a match made in heaven. This does prompt questions in my mind like, what is the life time of these solar arrays and batteries? What is done with them after they have reached end of life? Can their materials be recycled? How much of their components and materials are completely unusable after that? How are the materials sourced and from where? These are all questions that I will be investigating further on my own time and will follow up on my findings.
+
+[Electricity Demand](https://www.eia.gov/todayinenergy/detail.php?id=65264#)]]></content><author><name></name></author><summary type="html"><![CDATA[The Grid: The Fraying Wires Between Americans and Our Energy by Gretchen Bakke, Ph.D]]></summary></entry><entry><title type="html">Optimizing Attention Based Flower Classification For Edge Tpu: Training To Deployment</title><link href="http://localhost:4000/2025/01/06/Optimizing-attention-based-flower-classification-for-edge-tpu-training-to-deployment/" rel="alternate" type="text/html" title="Optimizing Attention Based Flower Classification For Edge Tpu: Training To Deployment" /><published>2025-01-06T00:00:00-06:00</published><updated>2025-01-06T00:00:00-06:00</updated><id>http://localhost:4000/2025/01/06/Optimizing-attention-based-flower-classification-for-edge-tpu:-training-to-deployment</id><content type="html" xml:base="http://localhost:4000/2025/01/06/Optimizing-attention-based-flower-classification-for-edge-tpu-training-to-deployment/"><![CDATA[]]></content><author><name></name></author><summary type="html"><![CDATA[]]></summary></entry><entry><title type="html">Unique Pointer Matrix Work Log</title><link href="http://localhost:4000/2025/01/06/unique-pointer-matrix-work-log/" rel="alternate" type="text/html" title="Unique Pointer Matrix Work Log" /><published>2025-01-06T00:00:00-06:00</published><updated>2025-01-06T00:00:00-06:00</updated><id>http://localhost:4000/2025/01/06/unique-pointer-matrix-work-log</id><content type="html" xml:base="http://localhost:4000/2025/01/06/unique-pointer-matrix-work-log/"><![CDATA[## RAII practice with custom Matrix class in C++
+
+Spent some time over the holidays working on practicing RAII in C++ by implementing my own custom unique pointer class and incorporating that into a custom matrix class in C++. The goal of this project was to practice RAII, which stands for Resource Acquisition Is Initialization, work on my C++ skills, and work on a ML systems related project. This code does not use any CUDA currently, but that could change down the line with future iterations.
+
+With this project, I created a custom unique pointer class called `UniqueResource`. This data struct will point to a matrice's data in the matrix class. The reason I chose to store the matrice's data in a pointer is because the matrices involved in machine learning can get very large. With these extremely large matrices, it would be inefficient to store it in a traditional member variable as opposed to a pointer that will simply point to a location in memory where the data is stored. With this, we can also enforce safety measures in the `UniqueResource` class.
+
+In order to test the `UniqueResource` class, I decided to implement a custom `Matrix` class that utilizes the `UniqueResource`. The matrix class also provided an opportunity to work on OOP concepts in C++ and the following:
+
+* Move semantics
+
+* working with row major indexing
+
+* function overloading
+
+* Templating
+
+### UniqueResource
+
+Let's get started with the `UniqueResource` implementation. This is going to be a templated class with the following member variables: `T *ptr` and `bool is_array`. `ptr` is a pointer to any type T. `is_array` is a boolean flag that indicates whether or not `ptr` is an array.
+
+The purpose of this class is to point to a unique object that nothing else can point to, so we do not want to allow copying of the pointer. To do this, we override the copy constructor and assignment operators.
+
+```cpp
+UniqueResource(const UniqueResource &) = delete;
+UniqueResource &operator=(const UniqueResource &) = delete;
+```
+
+Next, let's define the move constructor. Teaching move semantics in their entirety are outside the scope of this article, but I would suggest googling and doing some reading online about them if you are not familiar. The general idea with move semantics is that we want to assign ownership of some data type from one object to another without actually copying the value of that data and storing it somewhere else in memory, which is what a traditional assignment does. With move semantics, we also ensure only a single object owns the data at one time. This accomplishes both our uniqueness goal and will come in handy when working with very large data structs that are inefficient to copy. So, our move constructor should assign the value of its `ptr` to the place in memory the `other.ptr` points to. It should also update the `other.ptr` value so that it no longer points to the object after the assignment.
+
+```cpp
+UniqueResource(UniqueResource &&other) noexcept : ptr(other.ptr)
+{
+    other.ptr = nullptr;
+}
+```
+
+Next, we'll also need to implement a move assignment operator. The move assignment will be utilized when we want to move ownership from one object to another, whereas the move constructor is used a new object is being initialized using an rvalue. With the move assignment, we'll need to delete the existing data on the object being assigned to, move the ownership over, and then set the data on the "other" object to an initialied state. In our case, that means the following:
+1. delete existing `ptr` on object being assigned to
+2. assign value of `ptr` to value of `other.ptr`
+3. nullify `other.ptr`
+
+```cpp
+    UniqueResource &operator=(UniqueResource &&other) noexcept
+    {
+        // check not assigning to self
+        if (this != &other)
+        {
+            // delete existing data on this object
+            if (is_array)
+                delete[] ptr;
+            else
+                delete ptr;
+            // assign ptr address from other to this object
+            ptr = other.ptr;
+            // set other ptr address to a default value of nullptr
+            other.ptr = nullptr;
+        }
+
+        return *this;
+    }
+```
+
+After this, I also added a few more overrides to make working with this data struct easier. For example, I added overrides for the following ops:
+* equality
+* inequality
+* indexing
+* resource access
+
+Here is the final `UniqueResource` definition.
+
+```cpp
+#pragma once
+#include <cstddef>
+#include <stdexcept>
+
+template <typename T>
+class UniqueResource
+{
+private:
+    T *ptr;
+    bool is_array;
+
+public:
+    // Constructor
+    explicit UniqueResource(T *obj = nullptr) : ptr(obj), is_array(false) {};
+    // Constructor for arrays
+    UniqueResource(T *obj, bool array_flag) : ptr(obj), is_array(array_flag) {}
+
+    // Destructor
+    ~UniqueResource() noexcept
+    {
+        if (is_array)
+            delete[] ptr;
+        else
+            delete ptr;
+    };
+
+    // Copy constructor and assignment - think about what you should do with these
+    // Want to disable copying in this class because it is meant to be Unique.
+    // If we copied pointer addr from A to B and A destructor deleter ptr, that would B with a dangling ptr.
+    UniqueResource(const UniqueResource &) = delete;
+    UniqueResource &operator=(const UniqueResource &) = delete;
+
+    // Move constructor and assignment
+    UniqueResource(UniqueResource &&other) noexcept : ptr(other.ptr)
+    {
+        other.ptr = nullptr;
+    }
+
+    UniqueResource &operator=(UniqueResource &&other) noexcept
+    {
+        // check not assigning to self
+        if (this != &other)
+        {
+            // delete existing data on this object
+            if (is_array)
+                delete[] ptr;
+            else
+                delete ptr;
+            // assign ptr address from other to this object
+            ptr = other.ptr;
+            // set other ptr address to a default value of nullptr
+            other.ptr = nullptr;
+        }
+
+        return *this;
+    }
+
+    bool operator==(UniqueResource const &other) noexcept
+    {
+        return ptr == other.get();
+    }
+
+    bool operator!=(UniqueResource const &other) noexcept
+    {
+        return !(*this == other);
+    }
+
+    // Non-const version for modifiable access
+    T &operator[](std::size_t index)
+    {
+        if (!ptr)
+        {
+            throw std::runtime_error("Not an array resource.");
+        }
+        return ptr[index];
+    }
+
+    // Const version for read-only access
+    const T &operator[](std::size_t index) const
+    {
+        if (!ptr)
+        {
+            throw std::runtime_error("Null pointer access");
+        }
+        return ptr[index];
+    }
+
+    // Resource access
+    T *get() const
+    {
+        return ptr;
+    }
+
+    T &operator*() const
+    {
+        return *ptr;
+    }
+
+    T *operator->() const
+    {
+        return ptr;
+    }
+};
+```
+
+### Matrix Multiply Example with UniqueResource
+
+To showcase how the `UniqueResource` class can be utilized in the context of machine learning, I implemented a `Matrix` class that uses the `UniqueResource` data struct to store matrices and perform operations on them. This implementation does not utilize CUDA at all, but it could in future iterations. Here is the full code for the example.
+
+```cpp
+#include "unique_resource/unique_resource.h"
+#include <cstddef>
+#include <stdexcept>
+#include <random>
+#include <iostream>
+#include <immintrin.h>
+
+using namespace std;
+class NullPtrMatrix : public exception
+{
+public:
+    const char *what() const throw()
+    {
+        return "Retrieved a matrix that is a nullptr!";
+    }
+};
+
+class IncompatibleMatricesForOperation : public exception
+{
+public:
+    const char *what() const throw()
+    {
+        return "Attempted a matrix operatioin with two matrices with incompatble dimensions.";
+    }
+};
+
+class Matrix
+{
+public:
+    size_t num_rows;
+    size_t num_cols;
+    UniqueResource<float> data;
+
+    // Constructors and destructor
+    Matrix() : num_rows(0), num_cols(0), data(nullptr) {};
+    Matrix(size_t x, size_t y) : num_rows(x), num_cols(y), data(new float[x * y], true) {};
+    Matrix(size_t x, size_t y, float *initial_data)
+        : num_rows(x), num_cols(y), data(initial_data, true) {};
+
+    ~Matrix() {};
+
+    // Move constructor
+    Matrix(Matrix &&other) noexcept : num_rows(other.num_rows), num_cols(other.num_cols)
+    {
+        data = std::move(other.data);
+    }
+
+    static Matrix build_matrix(size_t rows, size_t cols)
+    {
+        Matrix m;
+        m.num_rows = rows;
+        m.num_cols = cols;
+        m.data = UniqueResource<float>(new float[rows * cols]);
+
+        return m;
+    }
+
+    // Move assignment
+    Matrix &operator=(Matrix &&other) noexcept
+    {
+        // check not assigning to self
+        if (this != &other)
+        {
+            // don't need to delete data b/c move assignment
+            // will delete the original ptr
+            data = std::move(other.data);
+            num_rows = other.num_rows;
+            num_cols = other.num_cols;
+            other.num_rows = 0;
+            other.num_cols = 0;
+        }
+
+        return *this;
+    }
+
+    // getter function to retrieve data given x and y coordinates in 2D array
+    float get(size_t x, size_t y) const
+    {
+        if (x < num_rows && x >= 0 && y < num_cols && y >= 0 && _validate_matrix())
+        {
+            int i = _row_major_index(x, y);
+            return data[i];
+        }
+        else
+        {
+            throw std::out_of_range("Index out of range.");
+        }
+    }
+
+    void set(size_t x, size_t y, float i)
+    {
+        if (x < num_rows && x >= 0 && y < num_cols && y >= 0 && _validate_matrix())
+        {
+            size_t index = _row_major_index(x, y);
+            data[index] = i;
+        }
+        else
+        {
+            throw std::out_of_range("Index out of range.");
+        }
+    }
+
+    size_t get_num_rows() { return num_rows; }
+
+    size_t get_num_cols() { return num_cols; }
+
+    bool is_empty() { return data.get() == nullptr; }
+
+    void reset()
+    {
+        num_rows = 0;
+        num_cols = 0;
+        UniqueResource<float> temp;
+        data = std::move(temp);
+    }
+
+    Matrix operator+(Matrix const &other)
+    {
+        if (num_rows != other.num_rows || num_cols != other.num_cols)
+        {
+            throw IncompatibleMatricesForOperation();
+        }
+
+        Matrix result = build_matrix(num_rows, num_cols);
+
+        for (int i = 0; i < num_rows; ++i)
+        {
+            for (int j = 0; j < num_cols; ++j)
+            {
+                size_t global_index = _row_major_index(i, j);
+                result.data[global_index] = data[global_index] + other.data[global_index];
+            }
+        }
+
+        return result;
+    }
+
+    Matrix operator*(Matrix const &other)
+    {
+        if (num_cols != other.num_rows)
+        {
+            throw IncompatibleMatricesForOperation();
+        }
+
+        // create temporary matrix data
+        Matrix result = build_matrix(num_rows, other.num_cols);
+
+        for (int i = 0; i < num_rows; ++i) // Iterate over rows of first matrix
+        {
+            for (int j = 0; j < other.num_cols; ++j) // Iterates over cols of second matrix
+            {
+                float value = 0.0;
+                for (int k = 0; k < num_cols; ++k) // Iterates over cols of first matrix
+                // Computes dot product of ith row of 1st matrix and jth col of 2nd matrix
+                {
+                    value += data[i * num_cols + k] * other.data[k * other.num_cols + j];
+                }
+                result.data[i * num_cols + j] = value;
+            }
+        }
+
+        return result;
+    }
+
+    void T()
+    {
+        // create temporary matrix data
+        UniqueResource<float> temp{new float[num_cols * num_rows], true};
+
+        for (int i = 0; i < num_rows; ++i)
+        {
+            for (int j = 0; j < num_cols; ++j)
+            {
+                size_t new_row = j;
+                size_t new_col = i;
+                size_t original_index = _row_major_index(i, j);
+                size_t new_index = _row_major_index(new_row, new_col);
+
+                temp[new_index] = data[original_index];
+            }
+        }
+
+        // move ownership of temp resources to data
+        // data now holds Transposed matrix!
+        data = std::move(temp);
+        std::swap(num_rows, num_cols);
+    }
+
+    void print()
+    {
+        for (int i = 0; i < num_rows; ++i)
+        {
+            for (int j = 0; j < num_cols; ++j)
+            {
+                cout << get(i, j) << " ";
+            }
+            cout << endl;
+        }
+    }
+
+private:
+    // matrix data stored in 1D array in row-major layout
+    // convert 2D index to 1D index
+    size_t _row_major_index(size_t row, size_t col) const
+    {
+        return (row * num_cols) + col;
+    }
+
+    // validate matrix stored in data ptr is not null
+    bool _validate_matrix() const
+    {
+        if (data.get() == nullptr)
+        {
+            throw NullPtrMatrix();
+        }
+        return true;
+    }
+};
+
+int main()
+{
+    // create 10x10 matrix
+    size_t x = 10;
+    size_t y = 10;
+    float *array_a = new float[x * y];
+    float *array_b = new float[x * y];
+
+    // Create a random number generator
+    std::random_device rd;                               // Seed for randomness
+    std::mt19937 gen(rd());                              // Mersenne Twister engine
+    std::uniform_real_distribution<float> dis(0.0, 1.0); // Range [0.0, 1.0]
+
+    for (int i = 0; i < (x * y); ++i)
+    {
+        array_a[i] = dis(gen);
+        array_b[i] = dis(gen);
+    }
+    cout << "Initialized random arrays of size: " << x * y << endl;
+
+    // create matrix A
+    Matrix A{x, y, array_a};
+    cout << "Matrix A: " << endl;
+    A.print();
+
+    cout << "-------------------------------" << endl;
+
+    // create matrix B
+    Matrix B{x, y, array_b};
+    cout << "Matrix B: " << endl;
+    B.print();
+    cout << "-------------------------------" << endl;
+
+    // test Matrix addition
+    Matrix C = A + B;
+    cout << "Result of Matrix Addition (A+B)" << endl;
+    C.print();
+
+    cout << "-------------------------------" << endl;
+
+    // Transpose matrix C
+    C.T();
+    cout << "Transpose of Matrix C:" << endl;
+    C.print();
+
+    cout << "-------------------------------" << endl;
+    cout << "Matrix Multiplication" << endl;
+    float *array_d = new float[4]{2.0, -2.0, 5.0, 3.0};
+    float *array_e = new float[4]{-1.0, 4.0, 7.0, -6.0};
+    Matrix D{2, 2, array_d};
+    Matrix E{2, 2, array_e};
+
+    cout << "Matrix D:" << endl;
+    D.print();
+    cout << "Matrix E:" << endl;
+    E.print();
+
+    Matrix F = D * E;
+    cout << "Result of D*E:" << endl;
+    F.print();
+
+    return 0;
+}
+```]]></content><author><name></name></author><summary type="html"><![CDATA[RAII practice with custom Matrix class in C++]]></summary></entry><entry><title type="html">Welcome to My Blog</title><link href="http://localhost:4000/2024/12/16/welcome-to-my-blog/" rel="alternate" type="text/html" title="Welcome to My Blog" /><published>2024-12-16T00:00:00-06:00</published><updated>2024-12-16T00:00:00-06:00</updated><id>http://localhost:4000/2024/12/16/welcome-to-my-blog</id><content type="html" xml:base="http://localhost:4000/2024/12/16/welcome-to-my-blog/"><![CDATA[## Test
+
+This is my first blog post on my personal site. More posts will be coming soon!]]></content><author><name></name></author><summary type="html"><![CDATA[Test]]></summary></entry></feed>
